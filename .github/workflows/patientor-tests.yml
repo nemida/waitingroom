@@ -10,16 +10,16 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v6
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
-      uses: actions/setup-node@v5
+      uses: actions/setup-node@v4
       with:
         node-version: '24'
 
     - name: Install patientor backend dependencies
       working-directory: ./patientor/backend
-      run: npm install --legacy-peer-deps
+      run: npm install
 
     - name: Lint patientor backend
       working-directory: ./patientor/backend
@@ -27,10 +27,7 @@ jobs:
 
     - name: Start patientor backend server
       working-directory: ./patientor/backend
-      run: |
-        npm start &
-        echo $! > server.pid
-        sleep 3
+      run: npm start &
 
     - name: Install API test dependencies
       working-directory: ./patientor/patientor-api-tests
@@ -40,25 +37,20 @@ jobs:
       working-directory: ./patientor/patientor-api-tests
       run: npx playwright install --with-deps chromium
 
+    - name: Wait for backend to start
+      run: npx wait-on http://localhost:3001/api/ping --timeout 60000
+
     - name: Run API tests
       working-directory: ./patientor/patientor-api-tests
       run: npm test
 
     - name: Upload API test report
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: api-playwright-report
         path: patientor/patientor-api-tests/playwright-report/
         retention-days: 30
-
-    - name: Stop patientor backend server
-      if: always()
-      working-directory: ./patientor/backend
-      run: |
-        if [ -f server.pid ]; then
-          kill $(cat server.pid) || true
-        fi
 
   e2e-tests:
     runs-on: ubuntu-latest
@@ -66,16 +58,16 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v6
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
-      uses: actions/setup-node@v5
+      uses: actions/setup-node@v4
       with:
         node-version: '24'
 
     - name: Install patientor backend dependencies
       working-directory: ./patientor/backend
-      run: npm install --legacy-peer-deps
+      run: npm install
 
     - name: Start patientor backend
       working-directory: ./patientor/backend
@@ -83,7 +75,7 @@ jobs:
 
     - name: Install patientor frontend dependencies
       working-directory: ./patientor/frontend
-      run: npm install --legacy-peer-deps
+      run: npm install
 
     - name: Build patientor frontend
       working-directory: ./patientor/frontend
@@ -109,7 +101,7 @@ jobs:
       run: npm test
 
     - name: Upload E2E test report
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: e2e-playwright-report
