@@ -1,0 +1,10 @@
+{
+  "name": "patientor",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --names backend,frontend \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.4"
+  }
+}
