@@ -1,4 +1,4 @@
-name: Patientor Tests
+name: Waiting Room Tests
 
 on:
   push:
@@ -17,31 +17,31 @@ jobs:
       with:
         node-version: '24'
 
-    - name: Install patientor backend dependencies
+    - name: Install backend dependencies
       working-directory: ./backend
       run: npm install
 
-    - name: Lint patientor backend
+    - name: Lint backend
       working-directory: ./backend
       run: npm run lint
 
-    - name: Start patientor backend server
+    - name: Start backend server
       working-directory: ./backend
       run: npm start &
 
     - name: Install API test dependencies
-      working-directory: ./patientor-api-tests
+      working-directory: ./waiting-room-api-tests
       run: npm install
 
     - name: Install Playwright browsers
-      working-directory: ./patientor-api-tests
+      working-directory: ./waiting-room-api-tests
       run: npx playwright install --with-deps chromium
 
     - name: Wait for backend to start
       run: npx wait-on http://localhost:3001/api/ping --timeout 60000
 
     - name: Run API tests
-      working-directory: ./patientor-api-tests
+      working-directory: ./waiting-room-api-tests
       run: npm test
 
     - name: Upload API test report
@@ -49,7 +49,7 @@ jobs:
       if: always()
       with:
         name: api-playwright-report
-        path: patientor-api-tests/playwright-report/
+        path: waiting-room-api-tests/playwright-report/
         retention-days: 30
 
   e2e-tests:
@@ -65,39 +65,39 @@ jobs:
       with:
         node-version: '24'
 
-    - name: Install patientor backend dependencies
+    - name: Install backend dependencies
       working-directory: ./backend
       run: npm install
 
-    - name: Start patientor backend
+    - name: Start backend
       working-directory: ./backend
       run: npm start &
 
-    - name: Install patientor frontend dependencies
+    - name: Install frontend dependencies
       working-directory: ./frontend
       run: npm install
 
-    - name: Build patientor frontend
+    - name: Build frontend
       working-directory: ./frontend
       run: npm run build
 
-    - name: Start patientor frontend preview
+    - name: Start frontend preview
       working-directory: ./frontend
       run: npx vite preview --port 5173 &
 
     - name: Install E2E test dependencies
-      working-directory: ./patientor-tests
+      working-directory: ./waiting-room-tests
       run: npm install
 
     - name: Install Playwright browsers
-      working-directory: ./patientor-tests
+      working-directory: ./waiting-room-tests
       run: npx playwright install --with-deps chromium
 
     - name: Wait for servers to start
       run: npx wait-on http://localhost:3001/api/ping http://localhost:5173 --timeout 60000
 
     - name: Run E2E tests
-      working-directory: ./patientor-tests
+      working-directory: ./waiting-room-tests
       run: npm test
 
     - name: Upload E2E test report
@@ -105,5 +105,5 @@ jobs:
       if: always()
       with:
         name: e2e-playwright-report
-        path: patientor-tests/playwright-report/
+        path: waiting-room-tests/playwright-report/
         retention-days: 30

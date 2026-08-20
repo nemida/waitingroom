@@ -1,4 +1,4 @@
-# Patientor
+# Waiting Room
 
 A full-stack electronic medical record application built with TypeScript. Patients can be browsed, their medical entries viewed in detail, and new entries added through a structured form. The project covers a realistic separation of concerns between a REST API backend and a React frontend, with strict runtime validation at the API boundary.
 
@@ -34,7 +34,7 @@ A full-stack electronic medical record application built with TypeScript. Patien
 ## Project Structure
 
 ```
-patientor/
+waiting-room/
   backend/
     data/             # In-memory seed data (patients, diagnoses)
     src/

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Patientor API', () => {
+test.describe('Waiting Room API', () => {
   test.describe('GET /api/ping', () => {
     test('should return pong', async ({ request }) => {
       const response = await request.get('/api/ping');

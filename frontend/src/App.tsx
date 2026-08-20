@@ -21,7 +21,7 @@ const App = () => {
     <Router>
       <Container maxWidth="md">
         <Typography variant="h4" fontWeight={600} sx={{ mt: 3, mb: 1 }}>
-          Patientor
+          Waiting Room
         </Typography>
         <Button component={Link} to="/" variant="outlined" size="small">
           Home
